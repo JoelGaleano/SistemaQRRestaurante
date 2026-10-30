@@ -1,0 +1,64 @@
+# =====================================================================
+# SmartMenu SaaS - Configuración de Seguridad y URLs Amigables (Apache)
+# =====================================================================
+
+# 1. Impedir el listado de directorios, desactivar firmas y forzar UTF-8
+AddDefaultCharset UTF-8
+Options -Indexes -MultiViews
+ServerSignature Off
+
+# 2. Proteger archivos críticos y de configuración contra descarga directa
+<FilesMatch "^(\.htaccess|\.env|bd\.sql|composer\.(json|lock)|conexion\.php|seguridad\.php|layout\.php)$">
+    Require all denied
+</FilesMatch>
+
+# 3. Cabeceras de Seguridad HTTP
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# 4. Motor de Reescritura para URLs Amigables y Seguras
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloquear acceso directo por navegador a la carpeta interna de vendor/
+    RewriteRule ^vendor/ - [F,L]
+
+    # Bloquear intentos básicos de inyección XSS o SQL en la Query String
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+    RewriteRule .* - [F,L]
+
+    # -----------------------------------------------------------------
+    # A. URLS AMIGABLES DEL CLIENTE (CARTA QR Y ENLACE POR ALIAS)
+    # -----------------------------------------------------------------
+    # Ej: /resto/m/cerveceria_mesa_1 -> cliente/menu.php?m=cerveceria_mesa_1
+    RewriteRule ^m/([a-zA-Z0-9_-]+)/?$ cliente/menu.php?m=$1 [L,QSA]
+
+    # Ej: /resto/carta/lupulo-negro/cerveceria_mesa_1 -> cliente/menu.php?alias=lupulo-negro&m=cerveceria_mesa_1
+    RewriteRule ^carta/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/?$ cliente/menu.php?alias=$1&m=$2 [L,QSA]
+
+    # Ej: /resto/carta/lupulo-negro -> cliente/menu.php?alias=lupulo-negro
+    RewriteRule ^carta/([a-zA-Z0-9_-]+)/?$ cliente/menu.php?alias=$1 [L,QSA]
+
+    # -----------------------------------------------------------------
+    # B. URLS AMIGABLES DEL PANEL ADMINISTRATIVO Y API
+    # -----------------------------------------------------------------
+    # Alias semánticos rápidos
+    RewriteRule ^login/?$ index.php#acceso [L,R=302]
+    RewriteRule ^admin/salir/?$ admin/logout.php [L]
+
+    # Si el archivo o carpeta existe físicamente (imágenes, CSS, etc.), servirlo directo
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Permitir acceder a cualquier ruta sin escribir la extensión .php
+    # Ej: /resto/admin/dashboard -> /resto/admin/dashboard.php
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.+?)/?$ $1.php [L,QSA]
+</IfModule>

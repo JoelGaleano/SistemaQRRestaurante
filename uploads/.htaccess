@@ -1,0 +1,12 @@
+# Desactivar ejecución de scripts en la carpeta de subidas
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+Options -ExecCGI -Indexes
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar
+<FilesMatch "\.(php|phtml|phar|pl|py|jsp|asp|htm|html|shtml|sh|cgi)$">
+    Require all denied
+</FilesMatch>
