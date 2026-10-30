@@ -878,7 +878,7 @@ session_destroy();
     </section>
 
     <footer>
-        &copy; 2026 SmartMenu SaaS · Plataforma Multi-Tenant de Cartas QR y Comandas en Tiempo Real.
+        &copy; 2026 SmartMenu SaaS · Plataforma Multi-Tenant de Cartas QR y Comandas en Tiempo Real · Desarrollado por <a href="https://github.com/JoelGaleano" target="_blank" rel="noopener noreferrer" style="color: var(--neon); text-decoration: none; font-weight: 700;">GaleanoJoel</a>
     </footer>
 
     <script>

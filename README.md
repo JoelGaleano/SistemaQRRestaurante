@@ -189,6 +189,8 @@ El motor de reescritura de Apache proporciona rutas limpias tanto para clientes 
 
 ---
 
-## 📄 Licencia
+## 📄 Licencia y Créditos
 
-Este proyecto fue desarrollado como solución integral de gestión gastronómica por QR. Puedes adaptarlo y extenderlo según las necesidades de tu negocio.
+Desarrollado por [**GaleanoJoel**](https://github.com/JoelGaleano).
+
+Este proyecto fue creado como solución integral de gestión gastronómica por QR. Puedes adaptarlo y extenderlo según las necesidades de tu negocio.

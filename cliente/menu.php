@@ -1071,6 +1071,9 @@ foreach ($resultados as $row) {
             <a href="<?= htmlspecialchars($basePath) ?>#acceso" target="_blank" class="btn-promo-saas">
                 🚀 Contratá SmartMenu para tu restaurante o bar →
             </a>
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-glass); font-size: 0.78rem; color: var(--text-muted);">
+                Desarrollado por <a href="https://github.com/JoelGaleano" target="_blank" rel="noopener noreferrer" style="color: var(--neon); text-decoration: none; font-weight: 700;">GaleanoJoel</a>
+            </div>
         </div>
     </footer>
 

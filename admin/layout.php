@@ -557,6 +557,23 @@ function renderAdminHead(string $tituloPagina): void {
             color: var(--danger);
             border: 1px solid rgba(255, 77, 79, 0.35);
         }
+
+        .admin-footer {
+            text-align: center;
+            padding: 24px 4%;
+            border-top: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            margin-top: 20px;
+        }
+        .admin-footer a {
+            color: var(--neon);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .admin-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
     <?php
 }
@@ -818,7 +835,15 @@ function renderAdminNav(string $paginaActiva): void {
                 };
             }
 
-            document.addEventListener('DOMContentLoaded', initGlobalSSE);
+            document.addEventListener('DOMContentLoaded', () => {
+                initGlobalSSE();
+                if (!document.querySelector('.admin-footer')) {
+                    const footer = document.createElement('footer');
+                    footer.className = 'admin-footer';
+                    footer.innerHTML = '&copy; 2026 SmartMenu SaaS · Desarrollado por <a href="https://github.com/JoelGaleano" target="_blank" rel="noopener noreferrer">GaleanoJoel</a>';
+                    document.body.appendChild(footer);
+                }
+            });
 
             return {
                 toggleMute: function() {
